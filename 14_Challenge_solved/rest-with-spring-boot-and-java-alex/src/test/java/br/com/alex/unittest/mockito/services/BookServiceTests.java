@@ -40,7 +40,7 @@ class BookServiceTests {
 	BookRepository repository;
 	
 	@BeforeEach
-	void setUpMocks		() throws Exception {
+	void setUpMocks () throws Exception {
 		mock = new MockBook();
 		MockitoAnnotations.openMocks(this);
 	}
