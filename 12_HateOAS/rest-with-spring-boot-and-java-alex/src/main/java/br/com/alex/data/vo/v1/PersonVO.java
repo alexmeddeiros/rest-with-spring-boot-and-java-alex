@@ -87,4 +87,5 @@ public class PersonVO extends RepresentationModel<PersonVO> implements Serializa
 				&& Objects.equals(lastName, other.lastName);
 	}
 
+	
 }

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.alex.controllers.PersonController;
 import br.com.alex.data.vo.v1.PersonVO;
+import br.com.alex.exceptions.RequiredObjectIsNullException;
 import br.com.alex.exceptions.ResourceNotFoundException;
 import br.com.alex.mapper.DozerMapper;
 import br.com.alex.model.Person;
@@ -34,6 +35,8 @@ public class PersonServices {
 	}
 
 	public PersonVO create(PersonVO person) {
+		if(person == null) throw new RequiredObjectIsNullException();		
+		
 		logger.info("Creating one person");
 		var entity = DozerMapper.parseObject(person, Person.class) ;
 		PersonVO vo = DozerMapper.parseObject(entity, PersonVO.class);
@@ -42,6 +45,9 @@ public class PersonServices {
 	}
 
 	public PersonVO update(PersonVO person) {
+		
+		if(person == null) throw new RequiredObjectIsNullException();
+		
 		logger.info("Updating one person");
 		var entity = repository.findById(person.getKey())
 				.orElseThrow(() -> new ResourceNotFoundException("No Records nor Fond for this ID"));
