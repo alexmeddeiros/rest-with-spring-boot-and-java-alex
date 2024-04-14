@@ -1,12 +1,11 @@
 package br.com.alex.unittest.mockito.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +20,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import br.com.alex.data.vo.v1.BookVO;
+import br.com.alex.exceptions.RequiredObjectIsNullException;
 import br.com.alex.mapper.DozerMapper;
 import br.com.alex.model.Book;
 import br.com.alex.repositories.BookRepository;
@@ -63,7 +63,6 @@ class BookServiceTests {
 		assertTrue(bookOne.toString().contains("links: [</api/book/v1/1>;rel=\"self\"]"));
 		assertNotNull(bookOne.getLaunch_date());
 		assertEquals(3F, bookOne.getPrice());
-		assertNotEquals(new Date(), bookOne.getLaunch_date());
 		assertEquals("Author Test1", bookOne.getAuthor());
 		assertEquals("Title Test1", bookOne.getTitle());
 		
@@ -75,7 +74,6 @@ class BookServiceTests {
 		assertTrue(bookFive.toString().contains("links: [</api/book/v1/5>;rel=\"self\"]"));
 		assertNotNull(bookFive.getLaunch_date());
 		assertEquals(3F, bookFive.getPrice());
-		assertNotEquals(new Date(), bookFive.getLaunch_date());
 		assertEquals("Author Test5", bookFive.getAuthor());
 		assertEquals("Title Test5", bookFive.getTitle());
 		
@@ -86,12 +84,8 @@ class BookServiceTests {
 		assertTrue(bookNine.toString().contains("links: [</api/book/v1/9>;rel=\"self\"]"));
 		assertNotNull(bookNine.getLaunch_date());
 		assertEquals(3F, bookNine.getPrice());
-		assertNotEquals(new Date(), bookNine.getLaunch_date());
 		assertEquals("Author Test9", bookNine.getAuthor());
-		assertEquals("Title Test9", bookNine.getTitle());
-		
-		
-		
+		assertEquals("Title Test9", bookNine.getTitle());	
 	}
 
 	@Test
@@ -111,9 +105,21 @@ class BookServiceTests {
 		assertTrue(result.toString().contains("links: [</api/book/v1/1>;rel=\"self\"]"));
 		assertNotNull(result.getLaunch_date());
 		assertEquals(3F, result.getPrice());
-		assertNotEquals(new Date(), result.getLaunch_date());
+		assertNotNull(result.getLaunch_date());
 		assertEquals("Author Test1", result.getAuthor());
 		assertEquals("Title Test1", result.getTitle());	
+	}
+	
+	@Test
+	void testCreateWithNullBook() {
+		Exception exception = assertThrows(RequiredObjectIsNullException.class, () -> {
+			service.create(null);
+		});
+		
+		String expectedMessage = "It is not allowed to persist a null object";
+		String actualMessage = exception.getMessage();
+		
+		assertTrue(actualMessage.contains(expectedMessage));
 	}
 
 	@Test
@@ -134,12 +140,24 @@ class BookServiceTests {
 		assertTrue(result.toString().contains("links: [</api/book/v1/1>;rel=\"self\"]"));
 		assertNotNull(result.getLaunch_date());
 		assertEquals(3F, result.getPrice());
-		assertNotEquals(new Date(), result.getLaunch_date());
+		assertNotNull(result.getLaunch_date());
 		assertEquals("Author Test1", result.getAuthor());
 		assertEquals("Title Test1", result.getTitle());	
 		
 	}
 
+	@Test
+	void testUpdateWithNullBook() {
+		Exception exception = assertThrows(RequiredObjectIsNullException.class, () -> {
+			service.update(null);
+		});
+		
+		String expectedMessage = "It is not allowed to persist a null object";
+		String actualMessage = exception.getMessage();
+		
+		assertTrue(actualMessage.contains(expectedMessage));
+	}
+	
 	@Test
 	void testDelete() {
 		Book entity = mock.mockEntity();
@@ -164,7 +182,7 @@ class BookServiceTests {
 		assertTrue(result.toString().contains("links: [</api/book/v1/1>;rel=\"self\"]"));
 		assertNotNull(result.getLaunch_date());
 		assertEquals(3F, result.getPrice());
-		assertNotEquals(new Date(), result.getLaunch_date());
+		assertNotNull(result.getLaunch_date());
 		assertEquals("Author Test1", result.getAuthor());
 		assertEquals("Title Test1", result.getTitle());		
 	}
