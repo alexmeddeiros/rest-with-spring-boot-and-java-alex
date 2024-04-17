@@ -28,9 +28,8 @@ public class BookServices {
 		logger.info("Find all book");
 
 		var books = DozerMapper.parseListObject(repository.findAll(), BookVO.class);
-		books
-			.stream()
-			.forEach(p -> p.add(linkTo(methodOn(BookController.class).findById(p.getKey())).withSelfRel()));
+		books.stream().forEach(p -> p.add(linkTo(methodOn(BookController.class).findById(p.getKey())).withSelfRel()));
+		
 		return books;
 
 	}
@@ -51,8 +50,7 @@ public class BookServices {
 		if(book == null) throw new RequiredObjectIsNullException();
 		
 		logger.info("Updating one book");
-		var entity = repository.findById(book.getKey())
-				.orElseThrow(() -> new ResourceNotFoundException("No Records nor Fond for this ID"));
+		var entity = repository.findById(book.getKey()).orElseThrow(() -> new ResourceNotFoundException("No Records nor Fond for this ID"));
 
 		entity.setAuthor(book.getAuthor());
 		entity.setTitle(book.getTitle());
@@ -67,8 +65,7 @@ public class BookServices {
 	public void delete(Long id) {
 		logger.info("Deleting one book");
 
-		var entity = repository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("No Records nor Fond for this ID"));
+		var entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No Records nor Fond for this ID"));
 
 		repository.delete(entity);
 	}	
@@ -76,8 +73,7 @@ public class BookServices {
 	public BookVO findById(Long id) {
 
 		logger.info("Find one book");
-		var entity =  repository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("No Records nor Fond for this ID"));
+		var entity =  repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No Records nor Fond for this ID"));
 		
 		BookVO vo = DozerMapper.parseObject(entity, BookVO.class);
 		vo.add(linkTo(methodOn(BookController.class).findById(vo.getKey())).withSelfRel());

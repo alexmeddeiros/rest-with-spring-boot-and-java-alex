@@ -27,9 +27,7 @@ public class PersonServices {
 		logger.info("Find all people");
 
 		var persons = DozerMapper.parseListObject(repository.findAll(), PersonVO.class);
-		persons
-			.stream()
-			.forEach(p -> p.add(linkTo(methodOn(PersonController.class).findById(p.getKey())).withSelfRel()));
+		persons.stream().forEach(p -> p.add(linkTo(methodOn(PersonController.class).findById(p.getKey())).withSelfRel()));
 		return persons;
 
 	}
@@ -49,8 +47,7 @@ public class PersonServices {
 		if(person == null) throw new RequiredObjectIsNullException();
 		
 		logger.info("Updating one person");
-		var entity = repository.findById(person.getKey())
-				.orElseThrow(() -> new ResourceNotFoundException("No Records nor Fond for this ID"));
+		var entity = repository.findById(person.getKey()).orElseThrow(() -> new ResourceNotFoundException("No Records nor Fond for this ID"));
 
 		entity.setAddress(person.getAddress());
 		entity.setFirstName(person.getFirstName());
@@ -63,9 +60,7 @@ public class PersonServices {
 
 	public void delete(Long id) {
 		logger.info("Deleting one person");
-
-		var entity = repository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("No Records nor Fond for this ID"));
+		var entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No Records nor Fond for this ID"));
 
 		repository.delete(entity);
 	}	
@@ -73,8 +68,7 @@ public class PersonServices {
 	public PersonVO findById(Long id) {
 
 		logger.info("Find one PersonVO");
-		var entity =  repository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("No Records nor Fond for this ID"));
+		var entity =  repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No Records nor Fond for this ID"));
 		
 		PersonVO vo = DozerMapper.parseObject(entity, PersonVO.class);
 		vo.add(linkTo(methodOn(PersonController.class).findById(vo.getKey())).withSelfRel());
