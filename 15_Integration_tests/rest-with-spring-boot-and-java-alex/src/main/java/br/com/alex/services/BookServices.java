@@ -58,8 +58,6 @@ public class BookServices {
 		entity.setPrice(book.getPrice());
 		repository.save(entity);
 		BookVO vo = DozerMapper.parseObject(entity, BookVO.class);
-		
-		// Link HateOAS
 		vo.add(linkTo(methodOn(BookController.class).findById(vo.getKey())).withSelfRel());
 		return vo;
 	}

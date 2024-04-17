@@ -95,13 +95,13 @@ public class BookController {
 
 	@DeleteMapping(value = "/{id}")
 	@Operation(summary = "Deteting a Book", description = "Deteting a Book", tags = {"Book"},
-		responses = {
-			@ApiResponse(description = "No Content", responseCode = "204", content = @Content),
-			@ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
-			@ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
-			@ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
-			@ApiResponse(description = "Internal Error", responseCode = "500", content = @Content),
-		})
+	responses = {
+		@ApiResponse(description = "No Content", responseCode = "204", content = @Content),
+		@ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
+		@ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
+		@ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
+		@ApiResponse(description = "Internal Error", responseCode = "500", content = @Content),
+})
 	public ResponseEntity<?> delete(@PathVariable(value = "id") Long id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
